@@ -15,3 +15,4 @@ HTML, CSS, and JavaScript (Vanilla JS or React for the frontend framework) Boots
 Node.js with Express for server-side logic MongoDB for storing user data, excuses, votes, and comments JWT for authentication (secure login/logout) Hosting:
 
 Frontend: GitHub Pages, Netlify, or Vercel Backend: Heroku or DigitalOcean Database: MongoDB Atlas Why This Project: This project will allow me to combine both frontend and backend development skills, creating a full-stack web application. I’ll have the opportunity to work with modern web technologies (React, Node.js, MongoDB), and focus on implementing user-driven features like voting systems and categories. It’s also a fun, creative, and engaging project that can attract a lot of users who enjoy light-hearted content. By working on this project, I’ll develop my skills in web design, user interaction, and managing server-side logic, while also learning about real-world web application deployment and hosting.
+...
