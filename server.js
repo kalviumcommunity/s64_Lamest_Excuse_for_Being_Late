@@ -1,15 +1,18 @@
 const express = require('express');
 const app = express();
 
+// Route for /ping with basic error handling
 app.get('/ping', (req, res) => {
-    res.send('pong');
-    });
+    try {
+        res.send('pong');
+    } catch (error) {
+        res.status(500).send('An error occurred');
+    }
+});
 
- //Defines a route for HTTP GET requests to the path /ping.
-//When a client sends a GET request to /ping, the server responds with the text "pong".
+// Use an environment variable for the port with a fallback to 3000
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-    });
-//Starts the server and listens for incoming connections on port 3000.
-//Logs a message to the console indicating that the server is running.
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
