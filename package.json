@@ -4,7 +4,8 @@
   "description": "Project Overview: This project will be a web-based platform where users can share their most creative, funny, or downright ridiculous excuses for being late to various events—whether it's work, school, or social gatherings. Users can submit their excuses, view others' submissions, and vote on the best (or lamest) excuses. The goal is to create an engaging and lighthearted community where people can laugh at the absurdity of these excuses, while also seeing how creative people can get under pressure.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "mongoose": "^8.9.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "vite": "^6.0.11"
   }
 }
