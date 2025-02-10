@@ -1,27 +1,76 @@
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+
 const app = express();
-const dataBase = require('./dataBase');
-const { default: mongoose } = require('mongoose');
-require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 
+app.use(express.json()); // Middleware to parse JSON requests
 
-// Route for /ping with basic error handling
-app.get('/', (req, res) => {
-    try {
-        res.send('Congratulation your.... hmmm(I mean Harsh) your database is connected!');
-    } catch (error) {
-        res.status(500).send('An error occurred!');
-    }
+// MongoDB Connection
+mongoose
+  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("✅ MongoDB connected successfully"))
+  .catch((err) => console.log("❌ MongoDB connection error:", err));
+
+// Define Schema and Model
+const itemSchema = new mongoose.Schema({
+  name: String,
+  price: Number,
 });
 
-dataBase();
+const Item = mongoose.model("Item", itemSchema);
 
+// Home Route with DB Status
+app.get("/", (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? "Connected" : "Not Connected";
+  res.json({ message: "Welcome to the ASAP Project!", databaseStatus: dbStatus });
+});
 
-// Use an environment variable for the port with a fallback to 8000
-const PORT = process.env.PORT || 8000;
+// CRUD Operations
+
+// CREATE - Add a new item
+app.post("/items", async (req, res) => {
+  try {
+    const newItem = await Item.create(req.body);
+    res.status(201).json(newItem);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// READ - Get all items
+app.get("/items", async (req, res) => {
+  try {
+    const items = await Item.find();
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// UPDATE - Modify an item by ID
+app.put("/items/:id", async (req, res) => {
+  try {
+    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedItem) return res.status(404).json({ message: "Item not found" });
+    res.json(updatedItem);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE - Remove an item by ID
+app.delete("/items/:id", async (req, res) => {
+  try {
+    const deletedItem = await Item.findByIdAndDelete(req.params.id);
+    if (!deletedItem) return res.status(404).json({ message: "Item not found" });
+    res.json({ message: "Item deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-
-
