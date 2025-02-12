@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "bruno.crud",
+  "name": "bruno.docs",
   "type": "collection",
   "ignore": [
     "node_modules",

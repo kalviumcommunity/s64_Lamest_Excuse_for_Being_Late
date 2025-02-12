@@ -1,76 +1,36 @@
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const connectDB = require("./dataBase"); // Import the database connection function
+const menuRoutes = require("./routes"); // Import the correct routes file
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(express.json()); // Middleware to parse JSON requests
+// Connect to the database
+connectDB();
 
-// MongoDB Connection
-mongoose
-  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.log("❌ MongoDB connection error:", err));
+// Middleware for parsing JSON requests
+app.use(express.json()); // Ensures handling of JSON request bodies
 
-// Define Schema and Model
-const itemSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
+// Ping route (testing)
+app.get("/ping", (req, res) => {
+  try {
+    res.send("pong");
+  } catch (error) {
+    res.status(500).send("An error occurred");
+  }
 });
 
-const Item = mongoose.model("Item", itemSchema);
-
-// Home Route with DB Status
+// *Home Route with DB Status*
 app.get("/", (req, res) => {
-  const dbStatus = mongoose.connection.readyState === 1 ? "Connected" : "Not Connected";
-  res.json({ message: "Welcome to the ASAP Project!", databaseStatus: dbStatus });
+  const status = mongoose.connection.readyState === 1 ? "Connected" : "Not Connected";
+  res.json({ message: "Welcome to the API", db_status: status });
 });
 
-// CRUD Operations
+// Use the routes defined in routes.js
+app.use("/api", menuRoutes); // 
 
-// CREATE - Add a new item
-app.post("/items", async (req, res) => {
-  try {
-    const newItem = await Item.create(req.body);
-    res.status(201).json(newItem);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// READ - Get all items
-app.get("/items", async (req, res) => {
-  try {
-    const items = await Item.find();
-    res.json(items);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// UPDATE - Modify an item by ID
-app.put("/items/:id", async (req, res) => {
-  try {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedItem) return res.status(404).json({ message: "Item not found" });
-    res.json(updatedItem);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// DELETE - Remove an item by ID
-app.delete("/items/:id", async (req, res) => {
-  try {
-    const deletedItem = await Item.findByIdAndDelete(req.params.id);
-    if (!deletedItem) return res.status(404).json({ message: "Item not found" });
-    res.json({ message: "Item deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
+// Start the server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
