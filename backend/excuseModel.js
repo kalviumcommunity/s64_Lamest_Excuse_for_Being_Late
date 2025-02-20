@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
-const ExcuseSchema = new mongoose.Schema({
+// const ExcuseSchema = new mongoose.Schema({
 
-    name: { 
-        type: String,
-        required: true },
+//     name: { 
+//         type: String,
+//         required: true },
         
-    description: {
-         type: String,
-          required: true
-         }
-});
+//     description: {
+//          type: String,
+//         //   required: true
+//          }
+// });
 
-module.exports = mongoose.model("Excuse", ExcuseSchema);
+// module.exports = mongoose.model("Excuse", ExcuseSchema);

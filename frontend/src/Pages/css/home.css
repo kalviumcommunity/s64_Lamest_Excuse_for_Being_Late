@@ -1,0 +1,138 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafb;
+    color: #333;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background: #1f2937;
+    color: white;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to right, #2563eb, #1e40af);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.hero-btn {
+    font-size: 20px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    background-color: white !important;
+    color: #2563eb !important;
+}
+
+/* Responsive Hero */
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 32px;
+    }
+    .hero p {
+        font-size: 16px;
+    }
+}
+
+/* Get Started Section */
+.get-started {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.get-started h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.get-started p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Button Styles (applies to all buttons) */
+button, .custom-button {
+    background-color: #2563eb;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover, .custom-button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Responsive Buttons */
+@media (max-width: 480px) {
+    button, .custom-button {
+        width: 100%;
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+.about-btn{
+    margin-top: 20px;
+}
