@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("http://localhost:3001/api/auth/login", {
         params: {
           email: formData.email,
           password: formData.password,
@@ -31,7 +31,7 @@ const Login = () => {
 
       if (response.data.token) {
         alert("Login successful!");
-        window.location.href = "/dashboard"; // Redirect to dashboard
+        window.location.href = "/home"; // Redirect to dashboard
       } else {
         alert("Invalid email or password");
       }

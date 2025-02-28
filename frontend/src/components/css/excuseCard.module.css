@@ -1,0 +1,199 @@
+/* ExcuseCard.css */
+
+/* .excuse-card {
+    max-width: 600px;
+    margin: 16px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+  }
+  
+  .excuse-card-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .avatar-container {
+    flex-shrink: 0;
+  }
+  
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e5e7eb;
+  }
+  
+  .content-container {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .header {
+    display: flex;
+    align-items: baseline;
+  }
+  
+  .name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #111827;
+  }
+  
+  .time {
+    margin-left: 8px;
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  .excuse {
+    margin-top: 8px;
+    color: #111827;
+    font-weight: 500;
+  }
+  
+  .description {
+    color: #111827;
+  }
+  
+  .interaction-bar {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  
+  .interaction-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+  }
+  
+  .count {
+    font-size: 14px;
+    color: #6b7280;
+  } */
+
+  .card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cardHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #E5E7EB;
+    margin-right: 10px;
+  }
+  
+  .userInfo {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .userName {
+    font-size: 14px;
+    font-weight: bold;
+    color: #111827;
+    margin: 0;
+  }
+  
+  .timestamp {
+    font-size: 12px;
+    color: #6B7280;
+  }
+  
+  .excuseContent {
+    font-size: 14px;
+    color: #111827;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  
+  .cardDivider {
+    height: 1px;
+    background-color: #E5E7EB;
+    margin-bottom: 10px;
+  }
+  
+  .cardActions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .actionButton {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .actionButton:hover {
+    background-color: #F3F4F6;
+  }
+  
+  .likeIcon,
+  .dislikeIcon,
+  .commentIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .likeIcon::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 10px solid #6B7280;
+  }
+  
+  .dislikeIcon::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid #6B7280;
+  }
+  
+  .commentIcon::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 8px;
+    border: 1.5px solid #6B7280;
+    border-radius: 2px;
+  }
+  
+  .actionCount {
+    font-size: 12px;
+    color: #6B7280;
+  }
