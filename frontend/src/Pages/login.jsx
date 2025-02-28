@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
 import "bootstrap/dist/css/bootstrap.min.css";
+
+// const navigate = useNavigate();
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -22,11 +25,9 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:3001/login", {
-        params: {
           email: formData.email,
           password: formData.password,
           keepSignedIn: formData.keepSignedIn,
-        },
       });
 
       if (response.data.token) {
