@@ -2,7 +2,7 @@
 # CloudFlare Link: https://s64-lamest-excuse-for-being-latee.pages.dev/
 
 
-# Project Title: Lamest Excuse for Being Late?
+## Project Title: Lamest Excuse for Being Late?
 
 Project Overview:
 This project will be a web-based platform where users can share their most creative, funny, or downright ridiculous excuses for being late to various events—whether it's work, school, or social gatherings. Users can submit their excuses, view others' submissions, and vote on the best (or lamest) excuses. The goal is to create an engaging and lighthearted community where people can laugh at the absurdity of these excuses, while also seeing how creative people can get under pressure.
