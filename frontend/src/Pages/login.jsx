@@ -22,17 +22,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post("http://localhost:3001/login", {
-          email: formData.email,
-          password: formData.password,
-          keepSignedIn: formData.keepSignedIn,
+      const response = await axios.post("http://localhost:3001/api/auth/login", {
+        email: formData.email,
+        password: formData.password,
       });
-
+  
       if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user data
         alert("Login successful!");
-        window.location.href = "/dashboard"; // Redirect to dashboard
+        window.location.href = "/home"; // Redirect to homepage
       } else {
         alert("Invalid email or password");
       }
@@ -40,6 +40,7 @@ const Login = () => {
       alert(error.response?.data?.error || "Login failed");
     }
   };
+  
 
   return (
     <section className="vh-100" style={{ backgroundColor: "#eee" }}>

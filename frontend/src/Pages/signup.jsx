@@ -33,7 +33,7 @@ const Signup = () => {
     }
       console.log(formData, "formData");
     try {
-      const response = await axios.post("http://localhost:3001/signup", {
+      const response = await axios.post("http://localhost:3001/api/auth/signup", {
         name: formData.name,
         email: formData.email,
         password: formData.password,
