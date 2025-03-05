@@ -21,7 +21,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the API", db_status: status });
 });
 
-app.use("/api", ExcuseRoutes); 
+app.use("/api/excuses", ExcuseRoutes);
+
 app.use("/api/auth", AuthRoutes );
 
 // Start Server

@@ -1,4 +1,4 @@
-/* Layout */
+/* Layout
 .layout {
     width: 100%;
     min-height: 100vh;
@@ -6,7 +6,7 @@
     flex-direction: column;
   }
   
-  /* Header */
+  Header
   .header {
     height: 64px;
     background-color: #FFFFFF;
@@ -74,15 +74,15 @@
     background-color: #4B5563;
   }
   
-  /* Main Content Layout */
+  Main Content Layout
   .content {
     display: flex;
     flex: 1;
   }
   
-  /* Sidebar */
+  Sidebar
   .sidebar {
-    width: 200px;
+    width: 350px;
     background-color: #FFFFFF;
     border-right: 1px solid #E5E7EB;
     padding: 20px 0;
@@ -141,7 +141,7 @@
     background-color: #F59E0B;
   }
   
-  /* Main Content Area */
+  Main Content Area
   .main {
     flex: 1;
     background-color: #F3F4F6;
@@ -149,7 +149,7 @@
     overflow-y: auto;
   }
   
-  /* Post Creator */
+  Post Creator
   .postCreator {
     background-color: #FFFFFF;
     border-radius: 8px;
@@ -191,14 +191,14 @@
     background-color: #2563EB;
   }
   
-  /* Excuse List */
+  Excuse List
   .excuseList {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
   
-  /* Loading and Error States */
+  Loading and Error States
   .loadingContainer,
   .errorContainer,
   .noExcuses {
@@ -250,4 +250,155 @@
   
   .noExcuses {
     color: #6B7280;
+  } */
+
+
+/* Layout */
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: #f3f4f6;
+}
+
+/* Header */
+.header {
+  background-color: #3b82f6;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #F3F4F6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menuButton span {
+  width: 20px;
+  height: 2px;
+  background-color: #4B5563;
+  margin: 2px 0;
+}
+
+.userIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #F3F4F6;
+  position: relative;
+}
+
+/* Content layout */
+.content {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 380px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.sidebarTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #111827;
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Excuse List */
+.excuseList {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Loading and Error States */
+.loadingContainer,
+.errorContainer,
+.noExcuses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3B82F6;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
+}
+
+.errorMessage {
+  color: #EF4444;
+  margin-bottom: 10px;
+}
+
+.retryButton {
+  padding: 8px 16px;
+  background-color: #3B82F6;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.retryButton:hover {
+  background-color: #2563EB;
+}
+
+.noExcuses {
+  color: #6B7280;
+}

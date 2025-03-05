@@ -1,16 +1,24 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  name:{
+  name: {
     type: String,
     required: true,
   },
   email: {
-     type: String,
-     unique: true 
-    },
-  password: String,
-},{timestamps: true});
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String, // Stores the generated avatar URL
+    required: true,
+  },
+}, { timestamps: true });
 
 const User = mongoose.model("User", UserSchema);
 

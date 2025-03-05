@@ -5,8 +5,8 @@ const Excuse = require("../Model/excuseModel.js");
 // ✅ Create a new Excuse (POST)
 router.post("/", async (req, res) => {
     try {
-        const { name, description } = req.body;
-        const newExcuse = new Excuse({ name, description });
+        const { title, description } = req.body;
+        const newExcuse = new Excuse({ title, description });
         await newExcuse.save();
         res.status(201).json({ message: "Excuse added successfully!", newExcuse });
     } catch (error) {
