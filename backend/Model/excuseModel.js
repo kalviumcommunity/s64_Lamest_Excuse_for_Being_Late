@@ -30,12 +30,6 @@ const excuseSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  category: {
-    type: String,
-    required: true,
-    enum: ['Work', 'School', 'Social', 'Personal', 'Other'],
-    default: 'Other'
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // Reference to the User model

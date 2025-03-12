@@ -28,18 +28,6 @@ const Login = () => {
         password: formData.password,
       });
   
-      // if (response.data.token) {
-      //   localStorage.setItem("token", response.data.token);
-      //   localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user data
-      //   // localStorage.setItem("user", JSON.stringify({ id: user._id, name: user.name, avatar: user.avatar }));
-      //   // localStorage.setItem("user", JSON.stringify({ id: response.data.user._id, name: response.data.user.name, avatar: response.data.user.avatar }));
-      //   // console.log("Stored User:", localStorage.getItem("user")); 
-
-      //   alert("Login successful!");
-      //   window.location.href = "/home"; // Redirect to homepage
-      // }
-
-
        // In login.jsx - replace the existing localStorage code with this
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);

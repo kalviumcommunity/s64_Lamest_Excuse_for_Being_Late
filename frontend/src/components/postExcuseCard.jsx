@@ -4,8 +4,7 @@ import styles from "./css/postExcuse.module.css";
 
 const PostExcuse = ({ onPostSuccess }) => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState(""); // Keeping original field name
-  const [category, setCategory] = useState("Other"); // Added category field
+  const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -13,9 +12,9 @@ const PostExcuse = ({ onPostSuccess }) => {
 
   // Fetch logged-in user details from local storage
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user")); // Assuming user info is stored in localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      setUserId(user.id); // Changed from email to id to match the model
+      setUserId(user.id);
       setUserName(user.name);
     }
   }, []);
@@ -49,17 +48,15 @@ const PostExcuse = ({ onPostSuccess }) => {
         "http://localhost:3001/api/excuses", 
         {
           title,
-          description, // Keeping original field name
-          category, // Added category field
-          user: userId, // Store the user's ID instead of name/email
+          description,
+          userId: userId,
         },
-        config // Pass the config with headers
+        config
       );
 
       // Reset fields on success 
       setTitle("");
       setDescription("");
-      setCategory("Other");
       setError("");
 
       // Notify parent component of successful post
@@ -68,7 +65,7 @@ const PostExcuse = ({ onPostSuccess }) => {
       }
     } catch (err) {
       console.error("Error posting excuse:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Something went wrong!");
+      setError(err.response?.data?.message || err.response?.data?.error || "Something went wrong!");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,19 +89,6 @@ const PostExcuse = ({ onPostSuccess }) => {
             className={styles.inputField}
             disabled={isSubmitting}
           />
-
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className={styles.inputField}
-            disabled={isSubmitting}
-          >
-            <option value="Work">Work</option>
-            <option value="School">School</option>
-            <option value="Social">Social</option>
-            <option value="Personal">Personal</option>
-            <option value="Other">Other</option>
-          </select>
 
           <textarea
             placeholder="Describe your excuse..."
