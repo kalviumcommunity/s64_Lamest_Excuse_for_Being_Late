@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const User = require("../Model/authModel"); // Ensure this model is correct
 
@@ -48,27 +49,56 @@ router.post("/signup", async (req, res) => {
 });
 
 // Login Route
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({ email });
+
+//     if (!user || !(await bcrypt.compare(password, user.password))) {
+//       return res.status(401).json({ error: "Invalid email or password" });
+//     }
+
+//     // Generate JWT token
+//     // const token = jwt.sign({ email: user.email, name: user.name }, "your_secret_key", {
+//     //   expiresIn: "1h",
+//     // });
+//     const token = jwt.sign({ email: user.email, name: user.name }, process.env.JWT_SECRET, {
+//       expiresIn: "1h",
+//     });
+
+//     res.json({ token });
+//   } catch (error) {
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
+// Login Route
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  
   try {
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    // Generate JWT token
+    const token = jwt.sign({ email: user.email, name: user.name }, process.env.JWT_SECRET, {
+      expiresIn: "6h",
+    });
 
-    res.json({
-      token,
+    // Return both token and user info (excluding password)
+    res.json({ 
+      token, 
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
-        avatar: user.avatar, // Use stored avatar
-      },
+        email: user.email,
+        avatar: user.avatar || "./default-avatar.png"
+      } 
     });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -84,15 +114,54 @@ router.get("/users", async (req, res) => {
 });
 
 // Get User by ID Route
-router.get("/users/:id", async (req, res) => {
+// router.get("/users/:id", async (req, res) => {
+//   try {
+//     console.log("User ID received:", req.params.id);
+
+//     if (!req.params.id || !mongoose.Types.ObjectId.isValid(req.params.id)) {
+//       return res.status(400).json({ message: "Invalid or missing user ID" });
+//     }
+
+//     const user = await User.findById(req.params.id);
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.json(user);
+//   } catch (error) {
+//     console.error("Error fetching user:", error);
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// });
+
+router.get("/users", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password"); // Exclude password
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    const email = req.query.email;
+    if (!email) return res.status(400).json({ error: "Email is required" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
     res.json(user);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+
+// During signup it checks whether the username is unique or not.
+router.get("/check-username/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+    const existingUser = await User.findOne({ name: username });
+
+    if (existingUser) {
+      return res.json({ available: false });
+    } else {
+      return res.json({ available: true });
+    }
+  } catch (error) {
     res.status(500).json({ error: "Server error" });
   }
 });

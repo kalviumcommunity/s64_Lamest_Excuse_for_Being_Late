@@ -28,12 +28,23 @@ const Login = () => {
         password: formData.password,
       });
   
+       // In login.jsx - replace the existing localStorage code with this
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user data
+        
+        // Store user data in a consistent format
+        const userData = {
+          id: response.data.user._id,
+          name: response.data.user.name,
+          email: response.data.user.email,
+          avatar: response.data.user.avatar || "/default-avatar.png"
+        };
+        
+        localStorage.setItem("user", JSON.stringify(userData));
+        
         alert("Login successful!");
         window.location.href = "/home"; // Redirect to homepage
-      } else {
+      } else{
         alert("Invalid email or password");
       }
     } catch (error) {
