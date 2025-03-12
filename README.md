@@ -1,7 +1,6 @@
 
 # CloudFlare Link: https://s64-lamest-excuse-for-being-latee.pages.dev/
 
-
 ## Project Title: Lamest Excuse for Being Late?
 
 Project Overview:
