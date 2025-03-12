@@ -1,144 +1,67 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import Card from '../components/excuseCard';
-// import styles from './css/Home.module.css';
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import styles from "./css/Home.module.css";
 // import PostExcuse from "../components/postExcuseCard";
+// import ExcuseCard from "../components/excuseCard";
 
 // const Home = () => {
+//   let storedUser;
+//   try {
+//     const [user, setUser] = useState({ id: "", name: "Guest", email: "", avatar: "" });
+//     // const storedUser = JSON.parse(localStorage.getItem("user")) || { id: "", name: "Guest", avatar: "" };
+//     // const storedUser = JSON.parse(localStorage.getItem("user")) || { id: "" };
+// // console.log("Stored User:", storedUser);  // Debugging line
+// // console.log("User ID being sent:", storedUser.id);
+//   } catch (error) {
+//     console.error("Error parsing stored user:", error);
+//     storedUser = { id: "", name: "Guest", avatar: "" };
+//   }
+
 //   const [excuses, setExcuses] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [newExcuseName, setNewExcuseName] = useState('');
-//   const [newExcuseDescription, setNewExcuseDescription] = useState('');
+//   const [users, setUsers] = useState([]);
 
-//   // Mock users data - in a real app this would come from MongoDB too
- 
-//   const storedUser = JSON.parse(localStorage.getItem("user")) || { id: "", name: "Guest", avatar: "" };
-
-//   <PostExcuse user={storedUser} />
-  
-
+//   // useEffect(() => {
+//   //   fetchUsers();
+//   //   fetchExcuses();
+//   // }, []);
 //   useEffect(() => {
-//     const fetchExcuses = async () => {
-//       try {
-//         setLoading(true);
-//         // Using the route from excuseRoutes.js
-//         const response = await axios.post('http://localhost:3001/api/excuses', { 
-//           name: newExcuseName,
-//           description: newExcuseDescription
-//         });
-        
-//         setExcuses(response.data);
-//         setLoading(false);
-//       } catch (err) {
-//         console.error('Error fetching excuses:', err);
-//         setError('Failed to load excuses. Please try again later.');
-//         setLoading(false);
+//     try {
+//       const storedUser = JSON.parse(localStorage.getItem("user"));
+//       if (storedUser) {
+//         setUser(storedUser);
 //       }
-//     };
-
-//     fetchExcuses();
+//     } catch (error) {
+//       console.error("Error parsing stored user:", error);
+//     }
 //   }, []);
 
-//   const handlePostExcuse = async () => {
-//     if (!newExcuseName.trim() || !newExcuseDescription.trim()) {
-//       alert('Please provide both a name and description for your excuse');
-//       return;
-//     }
-    
+//   const fetchUsers = async () => {
 //     try {
-//       // Using the route and data structure from excuseRoutes.js
-//       const response = await axios.post('/api/excuses', { 
-//         name: newExcuseName,
-//         description: newExcuseDescription
-//       });
-      
-//       // Add the new excuse to the state
-//       if (response.data && response.data.newExcuse) {
-//         setExcuses([response.data.newExcuse, ...excuses]);
-//         // Clear the inputs
-//         setNewExcuseName('');
-//         setNewExcuseDescription('');
+//       const storedUser = JSON.parse(localStorage.getItem("user")) || { email: "" };
+  
+//       if (!storedUser.id) {
+//         console.error("User ID is missing from localStorage.");
+//         return;
 //       }
-//     } catch (err) {
-//       console.error('Error posting excuse:', err);
-//       alert('Failed to post excuse. Please try again.');
+//       const res = await axios.get(`http://localhost:3001/api/auth/users?email=${storedUser.email}`);
+
+//       setUsers(res.data);
+//     } catch (error) {
+//       console.error("Error fetching users:", error);
 //     }
 //   };
-
-//   const getStatusColor = (status) => {
-//     switch(status) {
-//       case 'online': return styles.statusOnline;
-//       case 'offline': return styles.statusOffline;
-//       case 'away': return styles.statusAway;
-//       default: return styles.statusOffline;
+  
+//   const fetchExcuses = async () => {
+//     try {
+//       const res = await axios.get("http://localhost:3001/api/excuses");
+//       setExcuses(res.data);
+//     } catch (error) {
+//       console.error("Error fetching excuses:", error);
 //     }
 //   };
-
-//   if (loading) {
-//     return (
-//       <div className={styles.layout}>
-//         <header className={styles.header}>
-//           <div className={styles.menuButton}>
-//             <span></span>
-//             <span></span>
-//             <span></span>
-//           </div>
-//           <h1 className={styles.headerTitle}>Excuse Feed</h1>
-//           <div className={styles.userIcon}></div>
-//         </header>
-//         <div className={styles.content}>
-//           <aside className={styles.sidebar}>
-//             <h2 className={styles.sidebarTitle}>Users</h2>
-//             {/* Users would go here */}
-//           </aside>
-//           <main className={styles.main}>
-//             <div className={styles.loadingContainer}>
-//               <div className={styles.spinner}></div>
-//               <p>Loading excuses...</p>
-//             </div>
-//           </main>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <div className={styles.layout}>
-//         <header className={styles.header}>
-//           <div className={styles.menuButton}>
-//             <span></span>
-//             <span></span>
-//             <span></span>
-//           </div>
-//           <h1 className={styles.headerTitle}>Excuse Feed</h1>
-//           <div className={styles.userIcon}></div>
-//         </header>
-//         <div className={styles.content}>
-//           <aside className={styles.sidebar}>
-//             <h2 className={styles.sidebarTitle}>Users</h2>
-//             {/* Users would go here */}
-//           </aside>
-//           <main className={styles.main}>
-//             <div className={styles.errorContainer}>
-//               <p className={styles.errorMessage}>{error}</p>
-//               <button 
-//                 className={styles.retryButton}
-//                 onClick={() => window.location.reload()}
-//               >
-//                 Retry
-//               </button>
-//             </div>
-//           </main>
-//         </div>
-//       </div>
-//     );
-//   }
 
 //   return (
 //     <div className={styles.layout}>
-//       {/* Header */}
 //       <header className={styles.header}>
 //         <div className={styles.menuButton}>
 //           <span></span>
@@ -148,61 +71,21 @@
 //         <h1 className={styles.headerTitle}>Excuse Feed</h1>
 //         <div className={styles.userIcon}></div>
 //       </header>
-      
 //       <div className={styles.content}>
-//         {/* Sidebar */}
 //         <aside className={styles.sidebar}>
 //           <h2 className={styles.sidebarTitle}>Users</h2>
 //           <ul className={styles.userList}>
-//             {users.map(user => (
-//               <li key={user.id} className={styles.userItem}>
-//                 <div className={styles.userAvatar}></div>
+//             {users.length === 0 ? <p>Loading users...</p> : users.map((user, index) => (
+//               <li key={user.id || user._id || index} className={styles.userItem}>
+//                 <img src={user.avatar || "/default-avatar.png"} alt="User Avatar" className={styles.avatar} />
 //                 <span className={styles.userName}>{user.name}</span>
-//                 <span className={`${styles.statusIndicator} ${getStatusColor(user.status)}`}></span>
 //               </li>
 //             ))}
 //           </ul>
 //         </aside>
-        
-//         {/* Main Content */}
 //         <main className={styles.main}>
-//           {/* Post Creator */}
-//           <div className={styles.postCreator}>
-//             <input 
-//               className={styles.excuseInput}
-//               placeholder="Give your excuse a name"
-//               value={newExcuseName}
-//               onChange={(e) => setNewExcuseName(e.target.value)}
-//             />
-//             <textarea 
-//               className={styles.excuseInput}
-//               placeholder="Describe your excuse in detail"
-//               value={newExcuseDescription}
-//               onChange={(e) => setNewExcuseDescription(e.target.value)}
-//             ></textarea>
-//             <button 
-//               className={styles.postButton}
-//               onClick={handlePostExcuse}
-//             >
-//               Post Excuse
-//             </button>
-//           </div>
-          
-//           {/* Excuse Cards */}
-//           <div className={styles.excuseList}>
-//             {excuses.length > 0 ? (
-//               excuses.map((excuse) => (
-//                 <Card 
-//                   key={excuse._id}
-//                   excuse={excuse}
-//                 />
-//               ))
-//             ) : (
-//               <div className={styles.noExcuses}>
-//                 <p>No excuses found. Be the first to post one!</p>
-//               </div>
-//             )}
-//           </div>
+//           <PostExcuse user={storedUser} onPostSuccess={(newExcuse) => setExcuses([newExcuse, ...excuses])} />
+//           <ExcuseCard excuses={excuses} setExcuses={setExcuses} user={storedUser} />
 //         </main>
 //       </div>
 //     </div>
@@ -211,6 +94,7 @@
 
 // export default Home;
 
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./css/Home.module.css";
@@ -218,27 +102,64 @@ import PostExcuse from "../components/postExcuseCard";
 import ExcuseCard from "../components/excuseCard";
 
 const Home = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user")) || { id: "", name: "Guest", avatar: "" };
+  const [user, setUser] = useState({ id: "", name: "Guest", email: "", avatar: "" });
   const [excuses, setExcuses] = useState([]);
   const [users, setUsers] = useState([]);
 
+  // Load user data from localStorage on component mount
   useEffect(() => {
-    fetchUsers();
-    fetchExcuses();
+    try {
+      const storedUserData = localStorage.getItem("user");
+      if (storedUserData) {
+        const storedUser = JSON.parse(storedUserData);
+        setUser(storedUser);
+        
+        // Only fetch data if we have a logged-in user
+        if (storedUser.id) {
+          fetchUsers();
+          fetchExcuses();
+        }
+      }
+    } catch (error) {
+      console.error("Error parsing stored user:", error);
+    }
   }, []);
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/auth/users");
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      const res = await axios.get("http://localhost:3001/api/auth/users", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
-
+  
   const fetchExcuses = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/excuses");
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      const res = await axios.get("http://localhost:3001/api/excuses", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setExcuses(res.data);
     } catch (error) {
       console.error("Error fetching excuses:", error);
@@ -254,14 +175,23 @@ const Home = () => {
           <span></span>
         </div>
         <h1 className={styles.headerTitle}>Excuse Feed</h1>
-        <div className={styles.userIcon}></div>
+        <div className={styles.userIcon}>
+          {user.name !== "Guest" && (
+            <img 
+              src={user.avatar || "/default-avatar.png"} 
+              alt={user.name} 
+              className={styles.avatar}
+              style={{ width: "30px", height: "30px", borderRadius: "50%" }}
+            />
+          )}
+        </div>
       </header>
       <div className={styles.content}>
         <aside className={styles.sidebar}>
           <h2 className={styles.sidebarTitle}>Users</h2>
           <ul className={styles.userList}>
-          {users.map((user, index) => (
-              <li key={user.id || user._id || index} className={styles.userItem}>
+            {users.length === 0 ? <p>Loading users...</p> : users.map((user, index) => (
+              <li key={user._id || index} className={styles.userItem}>
                 <img src={user.avatar || "/default-avatar.png"} alt="User Avatar" className={styles.avatar} />
                 <span className={styles.userName}>{user.name}</span>
               </li>
@@ -269,8 +199,8 @@ const Home = () => {
           </ul>
         </aside>
         <main className={styles.main}>
-          <PostExcuse user={storedUser} onPostSuccess={(newExcuse) => setExcuses([newExcuse, ...excuses])} />
-          <ExcuseCard excuses={excuses} setExcuses={setExcuses} />
+          <PostExcuse user={user} onPostSuccess={(newExcuse) => setExcuses([newExcuse, ...excuses])} />
+          <ExcuseCard excuses={excuses} setExcuses={setExcuses} user={user} />
         </main>
       </div>
     </div>

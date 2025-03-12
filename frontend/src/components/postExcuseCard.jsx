@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./css/postExcuse.module.css"; 
 
-const PostExcuse = ({ user, onPostSuccess }) => {
+const PostExcuse = ({ onPostSuccess }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
+  const [userName, setUserName] = useState(null);
+
+  // Fetch logged-in user details from local storage
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user")); // Assuming user info is stored in localStorage
+    if (user && user.email) {
+      setUserEmail(user.email);
+      setUserName(user.name);
+    }
+  }, []);
 
   const handlePost = async () => {
+    // Check if the user is logged in
+    if (!userEmail) {
+      setError("You must be logged in to post an excuse!");
+      return;
+    }
+
     // Form validation
     if (!title.trim() || !description.trim()) {
       setError("Title and Description are required!");
@@ -20,15 +37,15 @@ const PostExcuse = ({ user, onPostSuccess }) => {
       const response = await axios.post("http://localhost:3001/api/excuses", {
         title,
         description,
-        userId: user.id,
-        user: user.name // Including the username for display
+        email: userEmail, // Attach user's email
+        user: userName, // Store the username for display
       });
 
-      // Reset fields on success
+      // Reset fields on success 
       setTitle("");
       setDescription("");
       setError("");
-      
+
       // Notify parent component of successful post
       if (onPostSuccess && response.data) {
         onPostSuccess(response.data);
@@ -43,41 +60,42 @@ const PostExcuse = ({ user, onPostSuccess }) => {
 
   return (
     <div className={styles.postContainer}>
-      <div className={styles.userInfo}>
-        <img 
-          src={user.avatar} 
-          alt="User Avatar" 
-          className={styles.avatar} 
-        />
-        <span className={styles.username}>{user.name || `User ${user.id}`}</span>
-      </div>
-      
-      {error && <p className={styles.error}>{error}</p>}
-      
-      <input
-        type="text"
-        placeholder="Excuse Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className={styles.inputField}
-        disabled={isSubmitting}
-      />
-      
-      <textarea
-        placeholder="Describe your excuse..."
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className={styles.textArea}
-        disabled={isSubmitting}
-      />
-      
-      <button 
-        onClick={handlePost} 
-        className={styles.postButton}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Posting..." : "Post Excuse"}
-      </button>
+      {userEmail ? (
+        <>
+          <div className={styles.userInfo}>
+            <span className={styles.username}>{userName || "Anonymous User"}</span>
+          </div>
+
+          {error && <p className={styles.error}>{error}</p>}
+
+          <input
+            type="text"
+            placeholder="Excuse Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={styles.inputField}
+            disabled={isSubmitting}
+          />
+
+          <textarea
+            placeholder="Describe your excuse..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className={styles.textArea}
+            disabled={isSubmitting}
+          />
+
+          <button 
+            onClick={handlePost} 
+            className={styles.postButton}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Posting..." : "Post Excuse"}
+          </button>
+        </>
+      ) : (
+        <p className={styles.error}>You need to log in to post an excuse.</p>
+      )}
     </div>
   );
 };

@@ -2,31 +2,48 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import styles from "./css/excuseCard.module.css";
 
-const ExcuseCard = ({ excuses, setExcuses }) => {
+const ExcuseCard = ({ excuses, setExcuses, user }) => {
   useEffect(() => {
     fetchExcuses();
   }, []);
 
-  const fetchExcuses = async () => {
-    try {
-      const res = await axios.get("http://localhost:3001/api/excuses");
-      const excusesWithUserData = await Promise.all(
-        res.data.map(async (excuse) => {
-          try {
-            const userRes = await axios.get(`http://localhost:3001/api/auth/users/${excuse.userId}`);
-            return { ...excuse, user: userRes.data.name, userAvatar: userRes.data.avatar };
-          } catch (err) {
-            console.error("Error fetching user data:", err);
-            return { ...excuse, user: "Unknown", userAvatar: "/default-avatar.png" };
-          }
-        })
-      );
-      setExcuses(excusesWithUserData);
-    } catch (error) {
-      console.error("Error fetching excuses:", error);
-    }
-  };
+  // const fetchExcuses = async () => {
+  //   try {
+  //     const res = await axios.get("http://localhost:3001/api/excuses", {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     const excusesWithUserData = await Promise.all(
+  //       res.data.map(async (excuse) => {
+  //         try {
+  //           const userRes = await axios.get(`http://localhost:3001/api/auth/users?email=${excuse.userEmail}`);
+  //           return { ...excuse, user: userRes.data.name, userAvatar: userRes.data.avatar };
+  //         } catch (err) {
+  //           console.error("Error fetching user data:", err);
+  //           return { ...excuse, user: "Unknown", userAvatar: "/default-avatar.png" };
+  //         }
+  //       })
+  //     );
+  //     setExcuses(excusesWithUserData);
+  //   } catch (error) {
+  //     console.error("Error fetching excuses:", error);
+  //   }
+  // };
 
+  // In excuseCard.jsx - fetchExcuses function
+const fetchExcuses = async () => {
+  try {
+    // Get token from localStorage
+    const token = localStorage.getItem("token");
+    
+    const res = await axios.get("http://localhost:3001/api/excuses", {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    
+    // Rest of your function...
+  } catch (error) {
+    console.error("Error fetching excuses:", error);
+  }
+};
 
   const handleLike = async (id) => {
     try {
@@ -78,7 +95,11 @@ const ExcuseCard = ({ excuses, setExcuses }) => {
                 👎 {excuse.dislikes}
               </button>
               <button className={styles.actionButton}>💬 Comment</button>
-              <button className={styles.deleteButton} onClick={() => handleDelete(excuse._id)}>🗑️ Delete</button>
+
+              {/* ✅ Show Delete Button only for the Logged-in User */}
+              {user?.email === excuse.userEmail && (
+                <button className={styles.deleteButton} onClick={() => handleDelete(excuse._id)}>🗑️ Delete</button>
+              )}
             </div>
           </div>
         ))

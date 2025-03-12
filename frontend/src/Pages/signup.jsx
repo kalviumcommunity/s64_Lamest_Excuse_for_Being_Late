@@ -11,12 +11,28 @@ const Signup = () => {
     agree: false,
   });
 
+  const [usernameAvailable, setUsernameAvailable] = useState(null); // ✅ Added missing state
+
+  const checkUsername = async (username) => {
+    if (!username) return;
+    try {
+      const response = await axios.get(`http://localhost:3001/api/auth/check-username/${username}`);
+      setUsernameAvailable(response.data.available);
+    } catch (error) {
+      console.error("Error checking username:", error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+
+    if (name === "name") {
+      checkUsername(value);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -31,7 +47,12 @@ const Signup = () => {
       alert("You must agree to the terms of service!");
       return;
     }
-      console.log(formData, "formData");
+
+    if (usernameAvailable === false) {
+      alert("Username is already taken. Please choose a different one.");
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:3001/api/auth/signup", {
         name: formData.name,
@@ -40,10 +61,7 @@ const Signup = () => {
       });
       alert("Signup successful!");
       window.location.href = "/login"; // Redirect to login page
-      // console.log(response, "response");
-    }
-    
-    catch (error) {
+    } catch (error) {
       alert(error.response?.data?.error || "Signup failed");
     }
   };
@@ -63,7 +81,13 @@ const Signup = () => {
                         <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
                           <input type="text" id="name" name="name" className="form-control" value={formData.name} onChange={handleChange} required />
-                          <label className="form-label" htmlFor="name">Your Name</label>
+                          <label className="form-label" htmlFor="name">Username</label>
+                          {usernameAvailable === false && (
+                            <p style={{ color: "red", fontSize: "14px" }}>Username is already taken</p>
+                          )}
+                          {usernameAvailable === true && formData.name && (
+                            <p style={{ color: "green", fontSize: "14px" }}>Username is available</p>
+                          )}
                         </div>
                       </div>
 
