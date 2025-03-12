@@ -4,46 +4,62 @@ import styles from "./css/postExcuse.module.css";
 
 const PostExcuse = ({ onPostSuccess }) => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(""); // Keeping original field name
+  const [category, setCategory] = useState("Other"); // Added category field
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [userEmail, setUserEmail] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
 
   // Fetch logged-in user details from local storage
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user")); // Assuming user info is stored in localStorage
-    if (user && user.email) {
-      setUserEmail(user.email);
+    if (user) {
+      setUserId(user.id); // Changed from email to id to match the model
       setUserName(user.name);
     }
   }, []);
 
   const handlePost = async () => {
     // Check if the user is logged in
-    if (!userEmail) {
+    if (!userId) {
       setError("You must be logged in to post an excuse!");
       return;
     }
 
     // Form validation
     if (!title.trim() || !description.trim()) {
-      setError("Title and Description are required!");
+      setError("Title and description are required!");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      const response = await axios.post("http://localhost:3001/api/excuses", {
-        title,
-        description,
-        email: userEmail, // Attach user's email
-        user: userName, // Store the username for display
-      });
+      const token = localStorage.getItem("token");
+
+      // Create headers with the authentication token
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+
+      // Send the request with the token in headers
+      const response = await axios.post(
+        "http://localhost:3001/api/excuses", 
+        {
+          title,
+          description, // Keeping original field name
+          category, // Added category field
+          user: userId, // Store the user's ID instead of name/email
+        },
+        config // Pass the config with headers
+      );
 
       // Reset fields on success 
       setTitle("");
       setDescription("");
+      setCategory("Other");
       setError("");
 
       // Notify parent component of successful post
@@ -60,7 +76,7 @@ const PostExcuse = ({ onPostSuccess }) => {
 
   return (
     <div className={styles.postContainer}>
-      {userEmail ? (
+      {userId ? (
         <>
           <div className={styles.userInfo}>
             <span className={styles.username}>{userName || "Anonymous User"}</span>
@@ -76,6 +92,19 @@ const PostExcuse = ({ onPostSuccess }) => {
             className={styles.inputField}
             disabled={isSubmitting}
           />
+
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className={styles.inputField}
+            disabled={isSubmitting}
+          >
+            <option value="Work">Work</option>
+            <option value="School">School</option>
+            <option value="Social">Social</option>
+            <option value="Personal">Personal</option>
+            <option value="Other">Other</option>
+          </select>
 
           <textarea
             placeholder="Describe your excuse..."

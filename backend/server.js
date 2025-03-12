@@ -24,11 +24,11 @@ app.get("/", (req, res) => {
 
 // app.use("/api/excuses", ExcuseRoutes);
 // app.use("/api/auth", AuthRoutes );
-// app.use("/api/excuses", authMiddleware, ExcuseRoutes);
+app.use("/api/excuses", authMiddleware, ExcuseRoutes);
 // app.use("/api/auth/users", authMiddleware, AuthRoutes);
 
 // Apply authentication selectively in server.js
-app.use("/api/auth/login", AuthRoutes);
+app.use("/api/auth/", AuthRoutes);
 app.use("/api/auth/signup", AuthRoutes);
 app.use("/api/auth/users", authMiddleware, (req, res, next) => {
   const route = AuthRoutes.stack.find(layer => layer.route && layer.route.path === "/users");
