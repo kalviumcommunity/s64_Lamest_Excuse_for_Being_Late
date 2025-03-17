@@ -105,7 +105,7 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
             <h3 className={styles.excuseTitle}>{excuse.title}</h3>
             <p className={styles.excuseDescription}>{excuse.description || excuse.content}</p>
             <div className={styles.excuseCategory}>
-              Category: {excuse.category || "Other"}
+              {/* Category: {excuse.category || "Other"} */}
             </div>
             <div className={styles.excuseActions}>
               <button className={styles.actionButton} onClick={() => handleLike(excuse._id)}>
