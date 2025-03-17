@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email validation
+const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Password strength validation
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,8 +13,10 @@ const Signup = () => {
     confirmPassword: "",
     agree: false,
   });
-
-  const [usernameAvailable, setUsernameAvailable] = useState(null); // ✅ Added missing state
+  
+  // Added missing errors state
+  const [errors, setErrors] = useState({});
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
 
   const checkUsername = async (username) => {
     if (!username) return;
@@ -33,23 +38,54 @@ const Signup = () => {
     if (name === "name") {
       checkUsername(value);
     }
+    
+    // Clear the error for this field when user starts typing
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: null
+      });
+    }
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!formData.name) {
+      newErrors.name = "Username is required.";
+    }
+
+    if (!emailRegex.test(formData.email)) {  // Email format validation
+      newErrors.email = "Invalid email format.";
+    }
+
+    if (!passwordRegex.test(formData.password)) {  // Password strength validation
+      newErrors.password =
+        "Password must be at least 8 characters long, include at least one uppercase letter and one number.";
+    }
+
+    if (formData.password !== formData.confirmPassword) {  // Password match validation
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
+    if (!formData.agree) {
+      newErrors.agree = "You must agree to the terms.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    if (!formData.agree) {
-      alert("You must agree to the terms of service!");
-      return;
-    }
+    if (!validateForm()) return; // Prevent form submission if validation fails
 
     if (usernameAvailable === false) {
-      alert("Username is already taken. Please choose a different one.");
+      setErrors({
+        ...errors,
+        name: "Username is already taken. Please choose a different one."
+      });
       return;
     }
 
@@ -62,7 +98,8 @@ const Signup = () => {
       alert("Signup successful!");
       window.location.href = "/login"; // Redirect to login page
     } catch (error) {
-      alert(error.response?.data?.error || "Signup failed");
+      const errorMessage = error.response?.data?.error || "Signup failed";
+      alert(errorMessage);
     }
   };
 
@@ -80,12 +117,23 @@ const Signup = () => {
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
-                          <input type="text" id="name" name="name" className="form-control" value={formData.name} onChange={handleChange} required />
+                          <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                            value={formData.name} 
+                            onChange={handleChange} 
+                            required 
+                          />
                           <label className="form-label" htmlFor="name">Username</label>
-                          {usernameAvailable === false && (
+                          {errors.name && (
+                            <div className="invalid-feedback">{errors.name}</div>
+                          )}
+                          {usernameAvailable === false && !errors.name && (
                             <p style={{ color: "red", fontSize: "14px" }}>Username is already taken</p>
                           )}
-                          {usernameAvailable === true && formData.name && (
+                          {usernameAvailable === true && formData.name && !errors.name && (
                             <p style={{ color: "green", fontSize: "14px" }}>Username is available</p>
                           )}
                         </div>
@@ -94,32 +142,75 @@ const Signup = () => {
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
-                          <input type="email" id="email" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
+                          <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                            value={formData.email} 
+                            onChange={handleChange} 
+                            required 
+                          />
                           <label className="form-label" htmlFor="email">Your Email</label>
+                          {errors.email && (
+                            <div className="invalid-feedback">{errors.email}</div>
+                          )}
                         </div>
                       </div>
 
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
-                          <input type="password" id="password" name="password" className="form-control" value={formData.password} onChange={handleChange} required />
+                          <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                            value={formData.password} 
+                            onChange={handleChange} 
+                            required 
+                          />
                           <label className="form-label" htmlFor="password">Password</label>
+                          {errors.password && (
+                            <div className="invalid-feedback">{errors.password}</div>
+                          )}
                         </div>
                       </div>
 
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-key fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
-                          <input type="password" id="confirmPassword" name="confirmPassword" className="form-control" value={formData.confirmPassword} onChange={handleChange} required />
+                          <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                            value={formData.confirmPassword} 
+                            onChange={handleChange} 
+                            required 
+                          />
                           <label className="form-label" htmlFor="confirmPassword">Repeat your password</label>
+                          {errors.confirmPassword && (
+                            <div className="invalid-feedback">{errors.confirmPassword}</div>
+                          )}
                         </div>
                       </div>
 
                       <div className="form-check d-flex justify-content-center mb-5">
-                        <input className="form-check-input me-2" type="checkbox" id="agree" name="agree" checked={formData.agree} onChange={handleChange} />
+                        <input 
+                          className={`form-check-input me-2 ${errors.agree ? 'is-invalid' : ''}`}
+                          type="checkbox" 
+                          id="agree" 
+                          name="agree" 
+                          checked={formData.agree} 
+                          onChange={handleChange} 
+                        />
                         <label className="form-check-label" htmlFor="agree">
                           I agree to all statements in <a href="#!">Terms of service</a>
                         </label>
+                        {errors.agree && (
+                          <div className="invalid-feedback">{errors.agree}</div>
+                        )}
                       </div>
 
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">

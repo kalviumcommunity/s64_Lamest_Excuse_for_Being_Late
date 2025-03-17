@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "bruno.docs",
+  "name": "Bruno.files",
   "type": "collection",
   "ignore": [
     "node_modules",
