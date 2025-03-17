@@ -81,6 +81,78 @@
   background-color: #fee2e2;
 }
 
+/* Edit Button Styling */
+.editButton {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.editButton:hover {
+  background-color: #dbeafe;
+}
+
+/* Edit Form Styling */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.editInput {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.editTextarea {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.editActions {
+  display: flex;
+  gap: 10px;
+}
+
+.saveButton {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #059669;
+}
+
+.cancelButton {
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  background-color: #4b5563;
+}
+
 /* Loading State */
 .loadingContainer {
   display: flex;
