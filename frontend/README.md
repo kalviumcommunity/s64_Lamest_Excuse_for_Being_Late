@@ -9,6 +9,6 @@ Currently, two official plugins are available:
 
 
 
-# Cloudflare deployment link.
+# Cloudflare deployment link
 
 https://4910dcf6.s64-lamest-excuse-for-being-late.pages.dev/#
