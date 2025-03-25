@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
 require("dotenv").config();
 const cors = require("cors");
 const connectDB = require("./dataBase");// Import the database connection function

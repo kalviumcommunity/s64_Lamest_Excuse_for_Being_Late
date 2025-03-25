@@ -37,7 +37,7 @@ const Home = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:3001/api/auth/users", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/users`,{
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ const Home = () => {
         return;
       }
 
-      const res = await axios.get("http://localhost:3001/api/excuses", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/excuses`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

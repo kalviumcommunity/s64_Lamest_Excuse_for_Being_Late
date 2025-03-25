@@ -21,7 +21,9 @@ const Signup = () => {
   const checkUsername = async (username) => {
     if (!username) return;
     try {
-      const response = await axios.get(`http://localhost:3001/api/auth/check-username/${username}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/auth/check-username/${username}`
+      );      
       setUsernameAvailable(response.data.available);
     } catch (error) {
       console.error("Error checking username:", error);
@@ -90,7 +92,8 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/api/auth/signup", {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/auth/signup`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
