@@ -20,10 +20,12 @@ const Login = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response =await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`,  {
+      const response = await axios.post(`http://localhost:3001/api/auth/login`, {
         email: formData.email,
         password: formData.password,
       });
@@ -43,7 +45,7 @@ const Login = () => {
         localStorage.setItem("user", JSON.stringify(userData));
         
         alert("Login successful!");
-        window.location.href = "/home"; // Redirect to homepage
+        navigate("/home"); // Use React Router navigation instead of window.location
       } else{
         alert("Invalid email or password");
       }

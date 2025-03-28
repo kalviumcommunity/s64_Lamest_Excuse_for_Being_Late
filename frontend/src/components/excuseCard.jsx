@@ -153,7 +153,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
           <div key={excuse._id} className={styles.excuseCard}>
             <div className={styles.excuseHeader}>
               <img 
-                src={excuse.user?.avatar || "/default-avatar.png"} 
+                src={excuse.user?.avatar || "/default/default-avatar.png"}
+
                 alt="User Avatar" 
                 className={styles.avatar} 
               />

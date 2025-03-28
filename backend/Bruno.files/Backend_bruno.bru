@@ -4,8 +4,21 @@ meta {
   seq: 2
 }
 
-get {
-  url: http://localhost:3001
-  body: none
+delete {
+  url: http://localhost:3001/api/excuses/67e5a19cc7271fb80bf0f5f3
+  body: json
   auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkppcmF5YVRvYWRAdXp1bWFraS5jb20iLCJuYW1lIjoiTWFzdGVyIEppcmF5YSIsImlhdCI6MTc0MzEwMTcxNiwiZXhwIjoxNzQzMTIzMzE2fQ.j-0EN8EjjNrm853P6PTNH_0MafkAfuy-sF8MvCZbarE
+}
+
+body:json {
+  {
+    "title": " Title",
+    "description": "Thiss is a sample description and discription only.",
+    "userId": "67d8133bc73b8ef5422d2118"
+  }
+  
 }
