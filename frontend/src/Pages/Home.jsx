@@ -4,10 +4,9 @@ import styles from "./css/Home.module.css";
 import PostExcuse from "../components/postExcuseCard";
 import ExcuseCard from "../components/excuseCard";
 import UserPosts from "../components/userPosts";
-import { getAvatarUrl } from "../utils/avatarHelper";
 
 const Home = () => {
-  const [user, setUser] = useState({ id: "", name: "Guest", email: "", avatar: "" });
+  const [user, setUser] = useState({ id: "", name: "Guest", email: "",  });
   const [excuses, setExcuses] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -92,7 +91,7 @@ const Home = () => {
         <div className={styles.userIcon}>
           {user.name !== "Guest" && (
             <img 
-              src={getAvatarUrl(user.avatar)} 
+              src="/default/default-avatar.png" 
               alt={user.name} 
               className={styles.avatar}
               style={{ width: "30px", height: "30px", borderRadius: "50%" }}
@@ -111,7 +110,7 @@ const Home = () => {
                 onClick={() => handleUserClick(userItem)}
               >
                 <img 
-                  src={getAvatarUrl(userItem.avatar)} 
+                  src="/default/default-avatar.png" 
                   alt="User Avatar" 
                   className={styles.avatar} 
                 />

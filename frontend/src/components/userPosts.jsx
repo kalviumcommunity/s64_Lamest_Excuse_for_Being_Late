@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import excuseStyles from "./css/excuseCard.module.css";
 import styles from "./css/userPosts.module.css";
-import { getAvatarUrl } from "../utils/avatarHelper";
 
 /**
  * Component to display excuses posted by a specific user
@@ -202,7 +201,7 @@ const UserPosts = ({ selectedUser, onClose, currentUser }) => {
             <div key={excuse._id} className={excuseStyles.excuseCard}>
               <div className={excuseStyles.excuseHeader}>
                 <img 
-                  src={getAvatarUrl(selectedUser.avatar)} 
+                  src="/default/default-avatar.png" 
                   alt="User Avatar" 
                   className={excuseStyles.avatar} 
                 />

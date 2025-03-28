@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const ExcuseRoutes = require("./Routes/excuseRoutes"); // Import the correct routes file
 const AuthRoutes = require("./Routes/authRoutes"); // Import the correct routes file
-const AvatarRoutes = require("./Routes/avatarRoutes"); // Import the avatar routes
+// const AvatarRoutes = require("./Routes/avatarRoutes"); // Import the avatar routes
 const authMiddleware = require('./Routes/middleware/authMiddleware'); 
 
 const app = express();
@@ -31,7 +31,7 @@ app.use("/api/excuses", authMiddleware, ExcuseRoutes);
 
 // Apply authentication selectively in server.js
 app.use("/api/auth/", AuthRoutes);
-app.use("/api/avatar", AvatarRoutes);
+// app.use("/api/avatar", AvatarRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 3001;
