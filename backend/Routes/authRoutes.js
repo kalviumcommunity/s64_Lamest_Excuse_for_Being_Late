@@ -5,8 +5,16 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const User = require("../Model/authModel"); // Ensure this model is correct
+const fs = require("fs");
+const path = require("path");
 
 dotenv.config(); // Load environment variables
+
+// Create default avatar directory if it doesn't exist
+const avatarDir = path.join(__dirname, "../public/default");
+if (!fs.existsSync(avatarDir)) {
+  fs.mkdirSync(avatarDir, { recursive: true });
+}
 
 // Function to set a default avatar from local storage
 let avatarCounter = 1;
@@ -14,7 +22,7 @@ let avatarCounter = 1;
 const generateAvatar = () => {
   avatarCounter = avatarCounter + 1;
   if (avatarCounter > 3) avatarCounter = 1;
-  return `./default/${avatarCounter}.jpg`;
+  return `/default/${avatarCounter}.jpg`;
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,7 +57,7 @@ router.post("/signup", async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      avatar: generateAvatar() // Assign local default avatar
+      avatar: generateAvatar() // Assign public URL path to avatar
     });
     
     await newUser.save();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./css/excuseCard.module.css";
+import { getAvatarUrl } from "../utils/avatarHelper";
 
 const ExcuseCard = ({ excuses, setExcuses, user }) => {
   const [editMode, setEditMode] = useState(null);
@@ -153,7 +154,7 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
           <div key={excuse._id} className={styles.excuseCard}>
             <div className={styles.excuseHeader}>
               <img 
-                src={excuse.user?.avatar || "/default-avatar.png"} 
+                src={getAvatarUrl(excuse.user?.avatar)} 
                 alt="User Avatar" 
                 className={styles.avatar} 
               />
