@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import excuseStyles from "./css/excuseCard.module.css";
 import styles from "./css/userPosts.module.css";
-
+import { getAvatarUrl } from "../utils/avatarHelper";
 
 /**
  * Component to display excuses posted by a specific user

@@ -7,7 +7,7 @@ import UserPosts from "../components/userPosts";
 
 
 const Home = () => {
-  const [user, setUser] = useState({ id: "", name: "Guest", email: "", avatar: "" });
+  const [user, setUser] = useState({ id: "", name: "Guest", email: "",  });
   const [excuses, setExcuses] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);

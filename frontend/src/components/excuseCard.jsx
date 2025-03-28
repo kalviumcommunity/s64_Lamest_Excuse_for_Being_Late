@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./css/excuseCard.module.css";
 
-
 const ExcuseCard = ({ excuses, setExcuses, user }) => {
   const [editMode, setEditMode] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -154,7 +153,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
           <div key={excuse._id} className={styles.excuseCard}>
             <div className={styles.excuseHeader}>
               <img 
-                src={excuse.user?.avatar || "/default/default-avatar.png"} 
+                src={excuse.user?.avatar || "/default/default-avatar.png"}
+
                 alt="User Avatar" 
                 className={styles.avatar} 
               />
