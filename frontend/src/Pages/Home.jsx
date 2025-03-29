@@ -4,6 +4,7 @@ import styles from "./css/Home.module.css";
 import PostExcuse from "../components/postExcuseCard";
 import ExcuseCard from "../components/excuseCard";
 import UserPosts from "../components/userPosts";
+import { getCookie, getUserCookie } from "../utils/cookieUtils";
 
 
 const Home = () => {
@@ -43,7 +44,8 @@ const Home = () => {
       const res = await axios.get(`http://localhost:3001/api/auth/users`,{
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       });
 
       setUsers(res.data);
@@ -64,7 +66,8 @@ const Home = () => {
       const res = await axios.get(`http://localhost:3001/api/excuses`, {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       });
       setExcuses(res.data);
     } catch (error) {

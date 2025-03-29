@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const connectDB = require("./dataBase");// Import the database connection function
 const express = require("express");
 const mongoose = require("mongoose");
@@ -13,7 +14,11 @@ const authMiddleware = require('./Routes/middleware/authMiddleware');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser()); // Add cookie-parser middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // Frontend URL
+  credentials: true // Allow cookies to be sent with requests
+}));
 
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));

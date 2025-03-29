@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import excuseStyles from "./css/excuseCard.module.css";
 import styles from "./css/userPosts.module.css";
+import { getCookie } from "../utils/cookieUtils";
 
 /**
  * Component to display excuses posted by a specific user
@@ -38,7 +39,8 @@ const UserPosts = ({ selectedUser, onClose, currentUser }) => {
       
       // Fetch excuses for the selected user
       const response = await axios.get(`http://localhost:3001/api/excuses/user/${selectedUser._id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
       });
       
       setUserExcuses(response.data);
@@ -62,7 +64,8 @@ const UserPosts = ({ selectedUser, onClose, currentUser }) => {
         `http://localhost:3001/api/excuses/${id}/like`,
         { userId: currentUser.id },
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
         }
       );
       
@@ -89,7 +92,8 @@ const UserPosts = ({ selectedUser, onClose, currentUser }) => {
       }
 
       await axios.delete(`http://localhost:3001/api/excuses/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true
       });
       
       setUserExcuses(userExcuses.filter(excuse => excuse._id !== id));
@@ -134,7 +138,8 @@ const UserPosts = ({ selectedUser, onClose, currentUser }) => {
         `http://localhost:3001/api/excuses/${id}`,
         editFormData,
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
         }
       );
       
@@ -240,7 +245,8 @@ const UserPosts = ({ selectedUser, onClose, currentUser }) => {
                 </div>
               ) : (
                 <>
-                  <h3 className={excuseStyles.excuseTitle}>{excuse.title}</h3>
+                  <h3 className={excuseStyles.excuseTitle}
+                  >{excuse.title}</h3>
                   <p className={excuseStyles.excuseDescription}>{excuse.description || excuse.content}</p>
                   <div className={excuseStyles.excuseActions}>
                     <button className={excuseStyles.actionButton} onClick={() => handleLike(excuse._id)}>

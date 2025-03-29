@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./css/postExcuse.module.css"; 
+import { getCookie, getUserCookie } from "../utils/cookieUtils";
 
 const PostExcuse = ({ onPostSuccess }) => {
   const [title, setTitle] = useState("");
@@ -10,12 +11,17 @@ const PostExcuse = ({ onPostSuccess }) => {
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
 
-  // Fetch logged-in user details from local storage
+  // Fetch logged-in user details from localStorage
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      setUserId(user.id);
-      setUserName(user.name);
+    try {
+      const storedUserData = localStorage.getItem("user");
+      if (storedUserData) {
+        const user = JSON.parse(storedUserData);
+        setUserId(user.id);
+        setUserName(user.name);
+      }
+    } catch (error) {
+      console.error("Error parsing stored user:", error);
     }
   }, []);
 
@@ -40,7 +46,8 @@ const PostExcuse = ({ onPostSuccess }) => {
       const config = {
         headers: {
           'Authorization': `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       };
 
       // Send the request with the token in headers
