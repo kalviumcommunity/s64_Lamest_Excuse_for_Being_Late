@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 import "bootstrap/dist/css/bootstrap.min.css";
+import { setCookie, setUserCookie } from "../utils/cookieUtils";
 
 // const navigate = useNavigate();
 
@@ -20,17 +21,22 @@ const Login = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response =await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`,  {
+      const response = await axios.post(`http://localhost:3001/api/auth/login`, {
         email: formData.email,
         password: formData.password,
-      });
+      }, { withCredentials: true });
   
-       // In login.jsx - replace the existing localStorage code with this
       if (response.data.token) {
+        // Store token in localStorage for frontend use
         localStorage.setItem("token", response.data.token);
+        
+        // Also store in cookie for redundancy
+        setCookie("token", response.data.token, formData.keepSignedIn ? 30 : 1);
         
         // Store user data in a consistent format
         const userData = {
@@ -40,11 +46,13 @@ const Login = () => {
           avatar: response.data.user.avatar || "/default-avatar.png"
         };
         
+        // Store user data in localStorage and cookie
         localStorage.setItem("user", JSON.stringify(userData));
+        setUserCookie(userData, formData.keepSignedIn ? 30 : 1);
         
         alert("Login successful!");
-        window.location.href = "/home"; // Redirect to homepage
-      } else{
+        navigate("/home"); // Use React Router navigation instead of window.location
+      } else {
         alert("Invalid email or password");
       }
     } catch (error) {

@@ -3,11 +3,15 @@ import axios from "axios";
 import styles from "./css/Home.module.css";
 import PostExcuse from "../components/postExcuseCard";
 import ExcuseCard from "../components/excuseCard";
+import UserPosts from "../components/userPosts";
+import { getCookie, getUserCookie } from "../utils/cookieUtils";
+
 
 const Home = () => {
-  const [user, setUser] = useState({ id: "", name: "Guest", email: "", avatar: "" });
+  const [user, setUser] = useState({ id: "", name: "Guest", email: "",  });
   const [excuses, setExcuses] = useState([]);
   const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Load user data from localStorage on component mount
   useEffect(() => {
@@ -37,10 +41,11 @@ const Home = () => {
         return;
       }
 
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/users`,{
+      const res = await axios.get(`http://localhost:3001/api/auth/users`,{
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       });
 
       setUsers(res.data);
@@ -58,15 +63,24 @@ const Home = () => {
         return;
       }
 
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/excuses`, {
+      const res = await axios.get(`http://localhost:3001/api/excuses`, {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       });
       setExcuses(res.data);
     } catch (error) {
       console.error("Error fetching excuses:", error);
     }
+  };
+
+  const handleUserClick = (clickedUser) => {
+    setSelectedUser(clickedUser);
+  };
+
+  const handleCloseUserPosts = () => {
+    setSelectedUser(null);
   };
 
   return (
@@ -81,7 +95,7 @@ const Home = () => {
         <div className={styles.userIcon}>
           {user.name !== "Guest" && (
             <img 
-              src={user.avatar || "/default-avatar.png"} 
+              src={user.avatar || "/default/default-avatar.png"} 
               alt={user.name} 
               className={styles.avatar}
               style={{ width: "30px", height: "30px", borderRadius: "50%" }}
@@ -93,17 +107,42 @@ const Home = () => {
         <aside className={styles.sidebar}>
           <h2 className={styles.sidebarTitle}>Users</h2>
           <ul className={styles.userList}>
-            {users.length === 0 ? <p>Loading users...</p> : users.map((user, index) => (
-              <li key={user._id || index} className={styles.userItem}>
-                <img src={user.avatar || "/default-avatar.png"} alt="User Avatar" className={styles.avatar} />
-                <span className={styles.userName}>{user.name}</span>
+            {users.length === 0 ? <p>Loading users...</p> : users.map((userItem, index) => (
+              <li 
+                key={userItem._id || index} 
+                className={styles.userItem}
+                onClick={() => handleUserClick(userItem)}
+              >
+                <img 
+                  src={userItem.avatar || "/default/default-avatar.png"} 
+                  alt="User Avatar" 
+                  className={styles.avatar} 
+                />
+                <span className={styles.userName}>{userItem.name}</span>
               </li>
             ))}
           </ul>
         </aside>
         <main className={styles.main}>
-          <PostExcuse user={user} onPostSuccess={(newExcuse) => setExcuses([newExcuse, ...excuses])} />
-          <ExcuseCard excuses={excuses} setExcuses={setExcuses} user={user} />
+          {selectedUser ? (
+            <UserPosts 
+              selectedUser={selectedUser} 
+              onClose={handleCloseUserPosts} 
+              currentUser={user}
+            />
+          ) : (
+            <>
+              <PostExcuse 
+                user={user} 
+                onPostSuccess={(newExcuse) => setExcuses([newExcuse, ...excuses])} 
+              />
+              <ExcuseCard 
+                excuses={excuses} 
+                setExcuses={setExcuses} 
+                user={user} 
+              />
+            </>
+          )}
         </main>
       </div>
     </div>

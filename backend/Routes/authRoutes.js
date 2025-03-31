@@ -80,6 +80,14 @@ router.post("/login", async (req, res) => {
       expiresIn: "6h",
     });
 
+    // Set token in cookie
+    res.cookie('token', token, {
+      httpOnly: true, // Prevents JavaScript access to the cookie
+      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      sameSite: 'strict', // Prevents the browser from sending this cookie along with cross-site requests
+      maxAge: 6 * 60 * 60 * 1000 // 6 hours in milliseconds
+    });
+
     // Return both token and user info (excluding password)
     res.json({ 
       token, 

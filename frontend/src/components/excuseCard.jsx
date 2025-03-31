@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./css/excuseCard.module.css";
+import { getCookie } from "../utils/cookieUtils";
 
 const ExcuseCard = ({ excuses, setExcuses, user }) => {
   const [editMode, setEditMode] = useState(null);
@@ -26,7 +27,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
       const res = await axios.get("http://localhost:3001/api/excuses", {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       });
       
       setExcuses(res.data);
@@ -49,7 +51,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
         {
           headers: {
             Authorization: `Bearer ${token}`
-          }
+          },
+          withCredentials: true
         }
       );
       
@@ -83,7 +86,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
       await axios.delete(`http://localhost:3001/api/excuses/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       });
       
       setExcuses(excuses.filter(excuse => excuse._id !== id));
@@ -130,7 +134,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
         {
           headers: {
             Authorization: `Bearer ${token}`
-          }
+          },
+          withCredentials: true
         }
       );
       
@@ -153,7 +158,8 @@ const ExcuseCard = ({ excuses, setExcuses, user }) => {
           <div key={excuse._id} className={styles.excuseCard}>
             <div className={styles.excuseHeader}>
               <img 
-                src={excuse.user?.avatar || "/default-avatar.png"} 
+                src={excuse.user?.avatar || "/default/default-avatar.png"}
+
                 alt="User Avatar" 
                 className={styles.avatar} 
               />
